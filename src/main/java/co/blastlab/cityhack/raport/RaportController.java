@@ -1,5 +1,7 @@
 package co.blastlab.cityhack.raport;
 
+import co.blastlab.cityhack.comment.Comment;
+import co.blastlab.cityhack.comment.CommentDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -100,10 +102,10 @@ public class RaportController {
 	public @ResponseBody
 	void generateRaport(@ApiParam(value = "Generate raport by id.", required = true) @PathVariable("raportId") long raportId) {
 		Raport raport = raportRepository.findById(raportId).get();
-		generateRaport();
+		generateRaport(raport);
 	}
 
-	void generateRaport() {
+	void generateRaport(Raport raport) {
 		final String uri = "http://192.168.48.36/raports";
 
 		RestTemplateBuilder restBuilder = new RestTemplateBuilder();
@@ -114,9 +116,10 @@ public class RaportController {
 
 		String json = restTemplate.getForObject(uri, String.class);
 		try {
-			List<Raport> raports = new ObjectMapper().readValue(json, new TypeReference<List<Raport>>() {});
-			for (Raport raport : raports) {
-				raport.setName(raport.getName() + "WOLOLO");
+			List<CommentDTO> comments = new ObjectMapper().readValue(json, new TypeReference<List<CommentDTO>>() {});
+			for (CommentDTO comment : comments) {
+				// TODO:
+				// add comments
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

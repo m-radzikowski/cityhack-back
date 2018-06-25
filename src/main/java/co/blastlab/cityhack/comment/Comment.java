@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 
 @Entity(name = "Comment")
 @Table(name = "comment")
@@ -12,10 +13,6 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 public class Comment {
-
-	static int POSITIVE = 1;
-	static int NEUTRAL = 0;
-	static int NEGATIVE = -1;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +23,13 @@ public class Comment {
 	private int opinion;
 
 	private String content;
+
+	private String commentId;
+	private ZonedDateTime createdTime;
+	private String message;
+	private String permalinkUrl;
+	private int likeCount;
+
+	private double confidence;
+	private String value;
 }
