@@ -1,4 +1,4 @@
-package co.blastlab.cityhack.Raport;
+package co.blastlab.cityhack.raport;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

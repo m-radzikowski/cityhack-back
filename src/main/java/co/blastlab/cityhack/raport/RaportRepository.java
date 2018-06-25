@@ -1,4 +1,4 @@
-package co.blastlab.cityhack.Raport;
+package co.blastlab.cityhack.raport;
 
 import org.springframework.data.repository.CrudRepository;
 

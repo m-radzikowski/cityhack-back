@@ -1,4 +1,4 @@
-package co.blastlab.cityhack.Raport;
+package co.blastlab.cityhack.comment;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -6,14 +6,17 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RaportDTO {
+public class CommentDTO {
 
 	@JsonInclude
 	private int id;
 
 	@JsonInclude
-	private String name;
+	private int raportId;
 
 	@JsonInclude
-	private String url;
+	private int opinion;
+
+	@JsonInclude
+	private String content;
 }

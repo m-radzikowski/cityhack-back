@@ -18,6 +18,21 @@
 				<constraints nullable="false"/>
 			</column>
 		</createTable>
+
+		<createTable tableName="comment">
+			<column name="id" type="int" autoIncrement="true">
+				<constraints nullable="false" unique="true" primaryKey="true"/>
+			</column>
+			<column name="content" type="varchar(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="opinion" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="raport_id" type="int">
+				<constraints nullable="false" foreignKeyName="fk_comment_raport" references="raport(id)"/>
+			</column>
+		</createTable>
 	</changeSet>
 
 </databaseChangeLog>
