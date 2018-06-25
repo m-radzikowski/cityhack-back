@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<changeSet id="01" author="jakub">
+		<createTable tableName="raport">
+			<column name="id" type="int" autoIncrement="true">
+				<constraints nullable="false" unique="true" primaryKey="true"/>
+			</column>
+			<column name="name" type="varchar(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="url" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+
+		<createTable tableName="comment">
+			<column name="id" type="int" autoIncrement="true">
+				<constraints nullable="false" unique="true" primaryKey="true"/>
+			</column>
+			<column name="value" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="confidence" type="double">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created_time" type="timestamp">
+				<constraints nullable="true"/>
+			</column>
+			<column name="like_count" type="int">
+				<constraints nullable="true"/>
+			</column>
+			<column name="permalink_url" type="varchar(255)">
+				<constraints nullable="true"/>
+			</column>
+			<column name="message" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="comment_id" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="raport_id" type="int">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="02" author="jakub">
+		<addForeignKeyConstraint baseColumnNames="raport_id"
+		                         baseTableName="comment"
+		                         constraintName="fk_comment_raport"
+		                         onDelete="CASCADE"
+		                         referencedColumnNames="id"
+		                         referencedTableName="raport"/>
+	</changeSet>
+
+</databaseChangeLog>
