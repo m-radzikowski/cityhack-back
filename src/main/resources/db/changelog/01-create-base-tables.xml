@@ -30,9 +30,18 @@
 				<constraints nullable="false"/>
 			</column>
 			<column name="raport_id" type="int">
-				<constraints nullable="false" foreignKeyName="fk_comment_raport" references="raport(id)"/>
+				<constraints nullable="false"/>
 			</column>
 		</createTable>
+	</changeSet>
+
+	<changeSet id="02" author="jakub">
+		<addForeignKeyConstraint baseColumnNames="raport_id"
+		                         baseTableName="comment"
+		                         constraintName="fk_comment_raport"
+		                         onDelete="CASCADE"
+		                         referencedColumnNames="id"
+		                         referencedTableName="raport"/>
 	</changeSet>
 
 </databaseChangeLog>

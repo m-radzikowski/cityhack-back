@@ -1,11 +1,15 @@
 package co.blastlab.cityhack.raport;
 
-import co.blastlab.cityhack.comment.Comment;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +47,20 @@ public class RaportController {
 		return raportDTOList;
 	}
 
+	@ApiOperation(value = "View a single raportt", response = RaportDTO.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Successfully retrieved raport"),
+		@ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+		@ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+		@ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+	}
+	)
+	@RequestMapping(path = "/{raportId}", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody
+	RaportDTO getRaport(@ApiParam(value = "Get raport by id.", required = true) @PathVariable("raportId") long raportId) {
+		return modelMapper.map(raportRepository.findById(raportId).get(), RaportDTO.class);
+	}
+
 	@ApiOperation(value = "Adds new raport to database and returns that raport", response = RaportDTO.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Successfully added raport"),
@@ -69,5 +87,39 @@ public class RaportController {
 	void deleteRaport(@ApiParam(value = "Get raport by id.", required = true) @PathVariable("raportId") long raportId) {
 		Raport raport = raportRepository.findById(raportId).get();
 		raportRepository.delete(raport);
+	}
+
+	@ApiOperation(value = "Generates rapport by ID", response = RaportDTO.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Successfully generated raport data"),
+		@ApiResponse(code = 400, message = "Incorrect data/body"),
+		@ApiResponse(code = 500, message = "Failed to add new resource")
+	}
+	)
+	@RequestMapping(path = "/generate/{raportId}", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody
+	void generateRaport(@ApiParam(value = "Generate raport by id.", required = true) @PathVariable("raportId") long raportId) {
+		Raport raport = raportRepository.findById(raportId).get();
+		generateRaport();
+	}
+
+	void generateRaport() {
+		final String uri = "http://192.168.48.36/raports";
+
+		RestTemplateBuilder restBuilder = new RestTemplateBuilder();
+		RestTemplate restTemplate = restBuilder
+			.rootUri(uri)
+			.setReadTimeout(10000)
+			.build();
+
+		String json = restTemplate.getForObject(uri, String.class);
+		try {
+			List<Raport> raports = new ObjectMapper().readValue(json, new TypeReference<List<Raport>>() {});
+			for (Raport raport : raports) {
+				raport.setName(raport.getName() + "WOLOLO");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
