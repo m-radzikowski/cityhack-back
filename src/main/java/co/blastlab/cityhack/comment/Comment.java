@@ -20,10 +20,6 @@ public class Comment {
 
 	private Long raportId;
 
-	private int opinion;
-
-	private String content;
-
 	private String commentId;
 	private ZonedDateTime createdTime;
 	private String message;

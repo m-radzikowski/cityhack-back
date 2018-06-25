@@ -17,12 +17,6 @@ public class CommentDTO {
 	private Long raportId;
 
 	@JsonInclude
-	private int opinion;
-
-	@JsonInclude
-	private String content;
-
-	@JsonInclude
 	private String commentId;
 
 	@JsonInclude
@@ -42,8 +36,4 @@ public class CommentDTO {
 
 	@JsonInclude
 	private String value;
-
-	public enum Value {
-		NEUTRAL, POSITIVE, NEGATIVE, NOT_FOUND;
-	}
 }

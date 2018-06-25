@@ -18,11 +18,19 @@
 			<column name="confidence" value=".06"/>
 			<column name="created_time" value="2018-04-06 08:00:00"/>
 			<column name="like_count" value="55"/>
-			<column name="opinion" value="1"/>
 			<column name="permalink_url" value="perma link tutej"/>
 			<column name="message" value="Ciekawe czym jest wiadomosc"/>
 			<column name="comment_id" value="125"/>
-			<column name="content" value="Super mega pomysł"/>
+			<column name="raport_id" value="1"/>
+		</insert>
+		<insert tableName="comment">
+			<column name="value" value="NEGATIVE"/>
+			<column name="confidence" value=".06"/>
+			<column name="created_time" value="2018-04-06 08:00:00"/>
+			<column name="like_count" value="55"/>
+			<column name="permalink_url" value="perma link tutej"/>
+			<column name="message" value="Ciekawe czym jest wiadomosc"/>
+			<column name="comment_id" value="125"/>
 			<column name="raport_id" value="1"/>
 		</insert>
 	</changeSet>

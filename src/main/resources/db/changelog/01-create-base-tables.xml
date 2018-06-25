@@ -23,31 +23,25 @@
 			<column name="id" type="int" autoIncrement="true">
 				<constraints nullable="false" unique="true" primaryKey="true"/>
 			</column>
-			<column name="value" type="varchar(100)">
+			<column name="value" type="varchar(255)">
 				<constraints nullable="false"/>
 			</column>
 			<column name="confidence" type="double">
 				<constraints nullable="false"/>
 			</column>
 			<column name="created_time" type="timestamp">
-				<constraints nullable="false"/>
+				<constraints nullable="true"/>
 			</column>
 			<column name="like_count" type="int">
+				<constraints nullable="true"/>
+			</column>
+			<column name="permalink_url" type="varchar(255)">
+				<constraints nullable="true"/>
+			</column>
+			<column name="message" type="varchar(255)">
 				<constraints nullable="false"/>
 			</column>
-			<column name="opinion" type="int">
-				<constraints nullable="false"/>
-			</column>
-			<column name="permalink_url" type="varchar(100)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="message" type="varchar(100)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="comment_id" type="varchar(100)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="content" type="varchar(100)">
+			<column name="comment_id" type="varchar(255)">
 				<constraints nullable="false"/>
 			</column>
 			<column name="raport_id" type="int">

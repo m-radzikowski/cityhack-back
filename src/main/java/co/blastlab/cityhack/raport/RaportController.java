@@ -1,7 +1,9 @@
 package co.blastlab.cityhack.raport;
 
+import co.blastlab.cityhack.Application;
 import co.blastlab.cityhack.comment.Comment;
 import co.blastlab.cityhack.comment.CommentDTO;
+import co.blastlab.cityhack.comment.CommentRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -22,12 +24,13 @@ import java.util.List;
 public class RaportController {
 
 	private RaportRepository raportRepository;
-
+	private CommentRepository commentRepository;
 	private ModelMapper modelMapper;
 
 	@Autowired
-	public RaportController(ModelMapper modelMapper, RaportRepository raportRepository) {
+	public RaportController(ModelMapper modelMapper, RaportRepository raportRepository, CommentRepository commentRepository) {
 		this.raportRepository = raportRepository;
+		this.commentRepository = commentRepository;
 		this.modelMapper = modelMapper;
 	}
 
@@ -49,7 +52,7 @@ public class RaportController {
 		return raportDTOList;
 	}
 
-	@ApiOperation(value = "View a single raportt", response = RaportDTO.class)
+	@ApiOperation(value = "View a single raport", response = RaportDTO.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Successfully retrieved raport"),
 		@ApiResponse(code = 401, message = "You are not authorized to view the resource"),
@@ -106,20 +109,20 @@ public class RaportController {
 	}
 
 	void generateRaport(Raport raport) {
-		final String uri = "http://192.168.48.36/raports";
+		final String uri = Application.FACEBK_URI + "/?postUrl=" + raport.getUrl();
 
-		RestTemplateBuilder restBuilder = new RestTemplateBuilder();
-		RestTemplate restTemplate = restBuilder
+		RestTemplate restTemplate = new RestTemplateBuilder()
 			.rootUri(uri)
-			.setReadTimeout(10000)
 			.build();
 
 		String json = restTemplate.getForObject(uri, String.class);
 		try {
 			List<CommentDTO> comments = new ObjectMapper().readValue(json, new TypeReference<List<CommentDTO>>() {});
-			for (CommentDTO comment : comments) {
-				// TODO:
-				// add comments
+			for (CommentDTO commentDTO : comments) {
+				Comment comment = modelMapper.map(commentDTO, Comment.class);
+				comment.setRaportId(raport.getId());
+
+				commentRepository.save(comment);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
