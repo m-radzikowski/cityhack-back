@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+	<changeSet id="02" author="jakub">
+
+		<insert tableName="raport">
+			<column name="name" value="Raport Test"/>
+			<column name="url" value="SomeKindOfURL"/>
+		</insert>
+
+		<insert tableName="comment">
+			<column name="value" value="POSITIVE"/>
+			<column name="confidence" value=".06"/>
+			<column name="created_time" value="2018-04-06 08:00:00"/>
+			<column name="like_count" value="55"/>
+			<column name="permalink_url" value="perma link tutej"/>
+			<column name="message" value="Ciekawe czym jest wiadomosc"/>
+			<column name="comment_id" value="125"/>
+			<column name="raport_id" value="1"/>
+		</insert>
+		<insert tableName="comment">
+			<column name="value" value="NEGATIVE"/>
+			<column name="confidence" value=".06"/>
+			<column name="created_time" value="2018-04-06 08:00:00"/>
+			<column name="like_count" value="55"/>
+			<column name="permalink_url" value="perma link tutej"/>
+			<column name="message" value="Ciekawe czym jest wiadomosc"/>
+			<column name="comment_id" value="125"/>
+			<column name="raport_id" value="1"/>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

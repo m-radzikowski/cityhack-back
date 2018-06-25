@@ -1,0 +1,7 @@
+version: '3.4'
+services:
+  cityhack:
+    build:
+      context: .
+      target: build
+    entrypoint: ["wait-for-it", "mssql:1433", "--", "mvn", "test"]
