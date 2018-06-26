@@ -83,6 +83,20 @@ public class RaportController {
 		return modelMapper.map(newRaport, RaportDTO.class);
 	}
 
+	@ApiOperation(value = "Updates existing raport in database and returns that raport", response = RaportDTO.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Successfully updated raport"),
+		@ApiResponse(code = 400, message = "Incorrect data/body"),
+		@ApiResponse(code = 500, message = "Failed to add new resource")
+	}
+	)
+	@RequestMapping(method = RequestMethod.PATCH, produces = "application/json")
+	public @ResponseBody
+	RaportDTO updateRaport(@RequestBody RaportDTO data) {
+		Raport newRaport = raportRepository.save(modelMapper.map(data, Raport.class));
+		return modelMapper.map(newRaport, RaportDTO.class);
+	}
+
 	@ApiOperation(value = "Removes rapport by ID", response = RaportDTO.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Successfully removed raport"),

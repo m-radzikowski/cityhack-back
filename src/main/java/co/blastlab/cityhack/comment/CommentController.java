@@ -24,6 +24,20 @@ public class CommentController {
 		this.modelMapper = modelMapper;
 	}
 
+	@ApiOperation(value = "Updates existing comment in database and returns that comment", response = CommentDTO.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Successfully updated comment"),
+		@ApiResponse(code = 400, message = "Incorrect data/body"),
+		@ApiResponse(code = 500, message = "Failed to add new resource")
+	}
+	)
+	@RequestMapping(method = RequestMethod.PATCH, produces = "application/json")
+	public @ResponseBody
+	CommentDTO updateComment(@RequestBody CommentDTO data) {
+		Comment updatedComment = commentRepository.save(modelMapper.map(data, Comment.class));
+		return modelMapper.map(updatedComment, CommentDTO.class);
+	}
+
 	@ApiOperation(value = "View a list of all comments", response = CommentDTO.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Successfully retrieved list"),
