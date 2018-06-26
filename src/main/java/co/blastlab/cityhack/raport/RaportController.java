@@ -6,6 +6,9 @@ import co.blastlab.cityhack.comment.CommentDTO;
 import co.blastlab.cityhack.comment.CommentRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +120,12 @@ public class RaportController {
 
 		String json = restTemplate.getForObject(uri, String.class);
 		try {
-			List<CommentDTO> comments = new ObjectMapper().readValue(json, new TypeReference<List<CommentDTO>>() {});
+			List<CommentDTO> comments = new ObjectMapper()
+				.registerModule(new ParameterNamesModule())
+				.registerModule(new Jdk8Module())
+				.registerModule(new JavaTimeModule())
+				.readValue(json, new TypeReference<List<CommentDTO>>() {});
+
 			for (CommentDTO commentDTO : comments) {
 				Comment comment = modelMapper.map(commentDTO, Comment.class);
 				comment.setRaportId(raport.getId());
