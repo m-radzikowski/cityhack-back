@@ -6,6 +6,9 @@ import co.blastlab.cityhack.comment.CommentDTO;
 import co.blastlab.cityhack.comment.CommentRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import io.swagger.annotations.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +83,20 @@ public class RaportController {
 		return modelMapper.map(newRaport, RaportDTO.class);
 	}
 
+	@ApiOperation(value = "Updates existing raport in database and returns that raport", response = RaportDTO.class)
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Successfully updated raport"),
+		@ApiResponse(code = 400, message = "Incorrect data/body"),
+		@ApiResponse(code = 500, message = "Failed to add new resource")
+	}
+	)
+	@RequestMapping(method = RequestMethod.PATCH, produces = "application/json")
+	public @ResponseBody
+	RaportDTO updateRaport(@RequestBody RaportDTO data) {
+		Raport newRaport = raportRepository.save(modelMapper.map(data, Raport.class));
+		return modelMapper.map(newRaport, RaportDTO.class);
+	}
+
 	@ApiOperation(value = "Removes rapport by ID", response = RaportDTO.class)
 	@ApiResponses(value = {
 		@ApiResponse(code = 200, message = "Successfully removed raport"),
@@ -117,7 +134,12 @@ public class RaportController {
 
 		String json = restTemplate.getForObject(uri, String.class);
 		try {
-			List<CommentDTO> comments = new ObjectMapper().readValue(json, new TypeReference<List<CommentDTO>>() {});
+			List<CommentDTO> comments = new ObjectMapper()
+				.registerModule(new ParameterNamesModule())
+				.registerModule(new Jdk8Module())
+				.registerModule(new JavaTimeModule())
+				.readValue(json, new TypeReference<List<CommentDTO>>() {});
+
 			for (CommentDTO commentDTO : comments) {
 				Comment comment = modelMapper.map(commentDTO, Comment.class);
 				comment.setRaportId(raport.getId());
